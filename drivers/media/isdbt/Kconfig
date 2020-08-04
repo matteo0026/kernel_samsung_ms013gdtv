@@ -1,0 +1,30 @@
+#
+# ISDBT config states
+#
+
+config ISDBT
+	bool "ISDB-T"
+	help
+	  This allows ISDBT.
+	  This module is designed for SPI or TSIF.
+	  Select chipset and interface
+
+config ISDBT_FC8300
+	depends on ISDBT
+	bool "FCI"
+
+config ISDBT_VENDOR_RAONTECH
+	depends on ISDBT
+	bool "RAONTECH"
+
+choice
+	depends on ISDBT && ISDBT_VENDOR_RAONTECH
+	prompt "chip"
+	default ISDBT_MTV23x
+	config ISDBT_MTV23x
+		bool "MTV23x"
+
+	config ISDBT_MTV222
+		bool "MTV222"
+
+endchoice

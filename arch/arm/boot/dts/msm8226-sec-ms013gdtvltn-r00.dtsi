@@ -1,0 +1,62 @@
+/* Copyright (c) 2013, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+&soc {
+	aliases {
+		spi1 = &spi_1;
+	};
+
+	i2c@f9928000 { /* BLSP1 QUP6 */
+		status = "disabled";
+	};
+
+	spi_1: spi@f9928000 { /* BLSP1 QUP6 */
+		compatible = "qcom,spi-qup-v2";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		reg-names = "spi_physical", "spi_bam_physical";
+		reg = <0xf9928000 0x1000>, <0xf9904000 0x19000>;
+		interrupt-names = "spi_irq", "spi_bam_irq";
+		interrupts = <0 100 0>, <0 238 0>;
+		spi-max-frequency = <25000000>;
+
+		qcom,gpio-mosi = <&msmgpio 20 0>;
+		qcom,gpio-miso = <&msmgpio 21 0>;
+		qcom,gpio-cs0 = <&msmgpio 22 0>;
+		qcom,gpio-clk = <&msmgpio 23 0>;
+		
+		qcom,infinite-mode = <0>;
+		qcom,use-bam;
+		qcom,ver-reg-exists;
+		qcom,bam-consumer-pipe-index = <22>;
+		qcom,bam-producer-pipe-index = <23>;
+		qcom,master-id = <86>;
+
+		qcom-spi@0 {
+			compatible = "isdbt_spi_comp";
+			reg = <0>;
+			spi-max-frequency = <32000000>;
+		};
+	};
+	
+	isdbt_data {
+		compatible = "isdbt_pdata";
+		isdbt_spi_mosi = <&msmgpio 20 0>;
+		isdbt_spi_miso = <&msmgpio 21 0>;
+		isdbt_spi_cs = <&msmgpio 22 0>;
+		isdbt_spi_clk = <&msmgpio 23 0>;
+		isdbt_pwr_en = <&msmgpio 36 0>;
+		isdbt_pwr_en2 = <&msmgpio 110 0>;
+		isdbt_irq = <&msmgpio 49 0>;
+
+	};
+};
